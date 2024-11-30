@@ -7,6 +7,7 @@ import { Textarea } from "./components/ui/textarea"
 import { Switch } from "./components/ui/switch"
 import { Sun, Moon } from 'lucide-react'
 import { motion, AnimatePresence } from "framer-motion"
+import { detectSpam } from './services/api'
 
 const models = [
   { id: 'model1', name: 'Random Forest Model' },
@@ -44,24 +45,14 @@ export default function SpamDetection() {
     setResult(null)
 
     try {
-      // Replace this URL with your actual Flask backend endpoint
-      const response = await fetch('http://127.0.0.1:5000/detect_spam', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message, model: selectedModel }),
-      })
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-
-      const data = await response.json()
-      setResult(data.is_spam ? 'Spam' : 'Not Spam')
+      const response = await detectSpam({ message, model: selectedModel })
+      setResult(response.result)
     } catch (error) {
-      console.error('Error:', error)
-      setResult('Error occurred while processing')
+      if (error instanceof Error) {
+        setResult(`Error: ${error.message}`)
+      } else {
+        setResult('An unexpected error occurred. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -156,6 +147,17 @@ export default function SpamDetection() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <div className="mt-8 text-center text-gray-600 dark:text-gray-400">
+          <a 
+            href="https://github.com/Aakash768" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-purple-500 dark:hover:text-purple-400 transition-colors duration-300"
+          >
+            @made by Aakash
+          </a>
+        </div>
       </div>
     </div>
   )
