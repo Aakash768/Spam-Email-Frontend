@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Spam Detect",
+  "name": "Spam Email Detection",
   "icons": [
     {
       "src": "favicon.ico",
