@@ -18,6 +18,7 @@ class APIError extends Error {
 export async function detectSpam({ message, model }: SpamDetectionRequest): Promise<SpamDetectionResponse> {
   try {
     const apiUrl = process.env.REACT_APP_API_URL;
+    console.log('API URL:', apiUrl);
     if (!apiUrl) {
       throw new APIError(500, 'API URL is not configured. Please check environment variables.');
     }
