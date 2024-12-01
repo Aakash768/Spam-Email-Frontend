@@ -17,9 +17,10 @@ class APIError extends Error {
 
 export async function detectSpam({ message, model }: SpamDetectionRequest): Promise<SpamDetectionResponse> {
   try {
-    // Use environment variable with fallback
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://spam-email-detection-7te5.onrender.com';
-    console.log('Using API URL:', apiUrl); // Keep debug log
+    const apiUrl = process.env.REACT_APP_API_URL;
+    if (!apiUrl) {
+      throw new APIError(500, 'API URL is not configured. Please check environment variables.');
+    }
     
     const response = await fetch(`${apiUrl}/detect_spam`, {
       method: 'POST',
