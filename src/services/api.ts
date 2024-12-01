@@ -17,9 +17,9 @@ class APIError extends Error {
 
 export async function detectSpam({ message, model }: SpamDetectionRequest): Promise<SpamDetectionResponse> {
   try {
-    // Hardcode the API URL temporarily to debug
-    const apiUrl = 'https://spam-email-detection-7te5.onrender.com';
-    console.log('Using API URL:', apiUrl); // Debug log
+    // Use environment variable with fallback
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://spam-email-detection-7te5.onrender.com';
+    console.log('Using API URL:', apiUrl); // Keep debug log
     
     const response = await fetch(`${apiUrl}/detect_spam`, {
       method: 'POST',
