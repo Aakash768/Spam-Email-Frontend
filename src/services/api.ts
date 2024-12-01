@@ -17,7 +17,7 @@ class APIError extends Error {
 
 export async function detectSpam({ message, model }: SpamDetectionRequest): Promise<SpamDetectionResponse> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5000';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const response = await fetch(`${apiUrl}/detect_spam`, {
       method: 'POST',
       headers: {
