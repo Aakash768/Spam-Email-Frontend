@@ -15,6 +15,23 @@ class APIError extends Error {
   }
 }
 
+async function retryFetch(url: string, options: RequestInit, retries: number = 3, delay: number = 1000): Promise<Response> {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+        return response;
+      }
+    } catch (error) {
+      if (attempt === retries - 1) {
+        throw error;
+      }
+    }
+    await new Promise(resolve => setTimeout(resolve, delay));
+  }
+  throw new Error('Failed to fetch after retries');
+}
+
 export async function detectSpam({ message, model }: SpamDetectionRequest): Promise<SpamDetectionResponse> {
   try {
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -23,17 +40,13 @@ export async function detectSpam({ message, model }: SpamDetectionRequest): Prom
       throw new APIError(500, 'API URL is not configured. Please check environment variables.');
     }
     
-    const response = await fetch(`${apiUrl}/detect_spam`, {
+    const response = await retryFetch(`${apiUrl}/detect_spam`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ message, model }),
     });
-
-    if (!response.ok) {
-      throw new APIError(response.status, `API Error: ${response.statusText}`);
-    }
 
     const data = await response.json();
     return {
