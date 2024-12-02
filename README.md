@@ -34,7 +34,7 @@ A modern, responsive web application for detecting spam emails using various mac
 
 1. Clone the repository:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Aakash768/Spam-Email-Frontend.git
    cd frontend
    ```
 
