@@ -81,13 +81,6 @@ The application supports various configuration options:
 - Configurable API endpoints
 - Retry mechanism for API calls
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
